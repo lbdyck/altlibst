@@ -1,17 +1,17 @@
-/* --------------------  rexx procedure  -------------------- *
- | Name:      ALTLIBST                                        |
- |                                                            |
- | Function:  Display the active altlib allocations by        |
- |            type, ddname, and dataset name                  |
- |                                                            |
- | Syntax:    %altlibst                                       |
- |                                                            |
- | Author:    Lionel B. Dyck                                  |
- |                                                            |
- | History:  (most recent on top)                             |
- |            2022/01/30 LBD - Creation                       |
- |                                                            |
- * ---------------------------------------------------------- */
+  /* --------------------  rexx procedure  -------------------- *
+  | Name:      ALTLIBST                                        |
+  |                                                            |
+  | Function:  Display the active altlib allocations by        |
+  |            type, ddname, and dataset name                  |
+  |                                                            |
+  | Syntax:    %altlibst                                       |
+  |                                                            |
+  | Author:    Lionel B. Dyck                                  |
+  |                                                            |
+  | History:  (most recent on top)                             |
+  |            2022/01/30 LBD - Creation                       |
+  |                                                            |
+  * ---------------------------------------------------------- */
 
   Call outtrap 'trap.'
   'altlib display'
@@ -19,23 +19,23 @@
   call get_dd_and_dsns
 
   if left(trap.1,3) = 'IKJ'
-     then sp = 1
-     else sp = 0
+  then sp = 1
+  else sp = 0
 
   Say 'Current ALTLIB Allocations:'
   do i = 2 to trap.0
-     type = subword(trap.i,1+sp,2)
-     parse value trap.i with .'='ddn
+    type = subword(trap.i,1+sp,2)
+    parse value trap.i with .'='ddn
     if wordpos('Stacked', trap.i) > 0 then stack = 'Stacked'
     else stack = ''
-     Say type '('ddn')' stack
-     do iac = 1 to words(hold.ddn)
-        say left(' ',12) word(hold.ddn,iac)
-        end
-     end
-exit 0
+    Say type '('ddn')' stack
+    do iac = 1 to words(hold.ddn)
+      say left(' ',12) word(hold.ddn,iac)
+    end
+  end
+  exit 0
 
-  Get_dd_and_dsns:
+Get_dd_and_dsns:
   call outtrap 't.'
   'lista sta'
   call outtrap 'off'
@@ -50,11 +50,11 @@ exit 0
       end
       When words(t.i) = 1 & ,
         wordpos(word(t.i,1),'KEEP CATLG DELETE') = 0 then
-        dsn = word(t.i,1)
+      dsn = word(t.i,1)
       When words(t.i) = 1 & ,
         wordpos(word(t.i,1),'KEEP CATLG DELETE') > 0 then do
         hold.ddn = hold.ddn dsn
-        end
+      end
       When words(t.i) = 2 then do
         ddn = word(t.i,1)
         hold.ddn = hold.ddn strip(dsn)
